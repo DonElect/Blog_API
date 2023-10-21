@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/posts")
-public class PostController {
+public class PostsController {
     private final PostServices postServices;
 
 
@@ -43,7 +43,7 @@ public class PostController {
         return ResponseEntity.ok(postServices.viewPost(adminId, postId));
     }
 
-    @GetMapping("/users/{postId}/page_no/{pageNo}/page_size/{pageSize}")
+    @GetMapping("/likes/{postId}/page_no/{pageNo}/page_size/{pageSize}")
     public ResponseEntity<List<UserResponseDTO>> pagingPostLiker(@PathVariable Long postId,
                                                                  @PathVariable Integer pageNo,
                                                                  @PathVariable Integer pageSize){

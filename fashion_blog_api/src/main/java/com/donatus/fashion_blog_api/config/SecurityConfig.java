@@ -49,13 +49,18 @@ public class SecurityConfig {
                         // Signup and login authorization
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/login")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/signup")).permitAll()
-                        // Task security filter
+                        // Post Authorizations
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/users/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/likes/**")).hasAnyAuthority("SUPER_ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/**")).hasAnyAuthority("USER")
-                        .requestMatchers(antMatcher(HttpMethod.PUT, "/task/**/task_id/**")).hasAnyAuthority("USER")
-                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/task/**/task_id/**")).hasAnyAuthority("USER")
+                        // Comment Authorizations
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/comments/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/comments/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.PUT, "/api/v1/comments/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/v1/comments/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/comments/likes/**")).hasAnyAuthority("USER")
+
                         .anyRequest().authenticated());
 
         http.httpBasic(Customizer.withDefaults());

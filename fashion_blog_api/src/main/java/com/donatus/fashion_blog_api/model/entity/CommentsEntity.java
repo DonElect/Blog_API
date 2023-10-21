@@ -28,7 +28,7 @@ public class CommentsEntity {
     private String comment;
 
     @CreationTimestamp
-    @Column(updatable = false, insertable = false)
+    @Column(updatable = false)
     private LocalDateTime commentDate;
 
     @UpdateTimestamp
