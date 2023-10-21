@@ -7,10 +7,10 @@ import com.donatus.fashion_blog_api.dto.comment.CommentResponseDTO;
 import java.util.List;
 
 public interface CommentServices {
-    CommentResponseDTO makeComment(CommentRequestDTO comment);
+    CommentResponseDTO makeComment(Long postId, Long userId, CommentRequestDTO comment);
     CommentResponseDTO viewComment(Long userId, Long commentId);
-    CommentResponseDTO editComment(CommentRequestDTO comment);
-    List<CommentResponseDTO> pageComment(Long pageNo, String sortBy);
-    List<UserResponseDTO> pageCommentLiker(Long commentId);
+    CommentResponseDTO editComment(Long userId, Long commentId, CommentRequestDTO comment);
+    List<CommentResponseDTO> pageComment(Long postId, Integer pageNo, Integer pageSize);
+    List<UserResponseDTO> pageCommentLiker(Long commentId, Integer pageNo, Integer pageSize);
     void deleteComment(Long commentId);
 }

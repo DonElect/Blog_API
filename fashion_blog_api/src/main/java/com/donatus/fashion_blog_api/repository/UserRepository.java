@@ -17,4 +17,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "SELECT UserEntity FROM UserEntity \n" +
             "WHERE userId IN (SELECT userId FROM PostLikes WHERE PostEntity.postId = :postId)")
     Slice<UserEntity> findPostLiker(Long postId, Pageable pageable);
+
+    @Query(value = "SELECT UserEntity FROM UserEntity \n" +
+            "WHERE userId IN (SELECT userId FROM CommentLikes WHERE CommentsEntity.commentId = :commentId)")
+    Slice<UserEntity> findCommentLiker(Long commentId, Pageable pageable);
 }

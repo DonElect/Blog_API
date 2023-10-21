@@ -16,5 +16,4 @@ public class CommentResponseDTO {
     private String comment;
     private LocalDateTime commentDate;
     private LocalDateTime commentUpdate;
-    private Long commentLikesCount;
 }

@@ -49,7 +49,7 @@ public class CommentsEntity {
     private List<CommentLikes> likes = new ArrayList<>();
 
 
-    public void addComment(CommentLikes like){
+    public void addCommentLikes(CommentLikes like){
         if (likes == null){
             likes = new ArrayList<>();
         }

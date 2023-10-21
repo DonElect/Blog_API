@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostServices {
 
     @Override
     public List<PostResponseDTO> pagePost(Long adminId, Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("createdDate"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("postDate"));
 
         Slice<PostEntity> result = postRepo.findPostEntitiesByUserEntityUserId(adminId, pageable);
 

@@ -1,7 +1,9 @@
 package com.donatus.fashion_blog_api.util;
 
+import com.donatus.fashion_blog_api.dto.comment.CommentResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
+import com.donatus.fashion_blog_api.entity.CommentsEntity;
 import com.donatus.fashion_blog_api.entity.PostEntity;
 import com.donatus.fashion_blog_api.entity.UserEntity;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,15 @@ public class MyDTOMapper {
                 u.getEmail(),
                 u.getUserName(),
                 u.getAddress()
+        )).toList();
+    }
+
+    public List<CommentResponseDTO> mapCommentResponse(List<CommentsEntity> comments){
+        return comments.stream().map(c -> new CommentResponseDTO(
+                c.getCommentId(),
+                c.getComment(),
+                c.getCommentDate(),
+                c.getCommentUpdate()
         )).toList();
     }
 }
