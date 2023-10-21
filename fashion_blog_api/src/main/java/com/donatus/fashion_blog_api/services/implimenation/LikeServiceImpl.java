@@ -21,10 +21,11 @@ public class LikeServiceImpl implements LikeServices {
     private final PostRepository postRepo;
 
 
+    @Transactional
     @Override
     public boolean likePost(Long userId, Long postId) {
         if (postLikesRepo.existsByUserEntityUserIdAndPostEntityPostId(userId, postId)){
-            postLikesRepo.removePostLikesByUserEntityUserIdAndPostEntityPostId(userId, postId);
+            postLikesRepo.deleteByUserEntityUserIdAndPostEntityPostId(userId, postId);
 
             // Post unliked
             return false;
@@ -48,8 +49,10 @@ public class LikeServiceImpl implements LikeServices {
     @Transactional
     @Override
     public boolean likeComment(Long userId, Long commentId) {
-        if (commentLikesRepo.existsByUserEntityUserIdAndComLikeId(userId, commentId)){
-            commentLikesRepo.removeCommentLikesByUserEntityUserIdAndComLikeId(userId, commentId);
+        if (commentLikesRepo.existsByUserEntityUserIdAndCommentsEntityCommentId(userId, commentId)){
+            commentLikesRepo.deleteByUserEntityUserIdAndCommentsEntityCommentId(userId, commentId);
+
+            System.out.println("Me too");
 
             // Comment unliked
             return false;
@@ -71,12 +74,12 @@ public class LikeServiceImpl implements LikeServices {
     }
 
     @Override
-    public Long postLikeCount(Long postId) {
+    public Long countPostLikes(Long postId) {
         return postLikesRepo.countPostLikesByPostEntityPostId(postId);
     }
 
     @Override
-    public Long commentLikeCount(Long commentId) {
+    public Long countCommentLikes(Long commentId) {
         return commentLikesRepo.countCommentLikesByCommentsEntityCommentId(commentId);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentLikesRepository extends JpaRepository<CommentLikes, Long> {
-    boolean existsByUserEntityUserIdAndComLikeId(Long userId, Long comLikeId);
-    void removeCommentLikesByUserEntityUserIdAndComLikeId(Long userEntity_userId, Long comLikeId);
+    boolean existsByUserEntityUserIdAndCommentsEntityCommentId(Long userId, Long commentId);
+    void deleteByUserEntityUserIdAndCommentsEntityCommentId(Long userId, Long comLikeId);
     Long countCommentLikesByCommentsEntityCommentId(Long commentId);
 }

@@ -69,7 +69,6 @@ public class CommentServiceImpl implements CommentServices {
         CommentsEntity oldComment = commentRepo.findCommentsEntityByUserEntityUserIdAndCommentId(userId, commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found!"));
 
-        // TODO: check if this section is working
         mapper.map(comment, oldComment);
 
         user.addComment(oldComment);

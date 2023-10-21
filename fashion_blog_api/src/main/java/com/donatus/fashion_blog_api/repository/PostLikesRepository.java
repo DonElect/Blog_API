@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
     boolean existsByUserEntityUserIdAndPostEntityPostId(Long userId, Long postId);
-    void removePostLikesByUserEntityUserIdAndPostEntityPostId(Long userId, Long postId);
+    void deleteByUserEntityUserIdAndPostEntityPostId(Long userId, Long postEntity_postId);
     Long countPostLikesByPostEntityPostId(Long postId);
 }
