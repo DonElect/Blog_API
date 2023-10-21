@@ -1,6 +1,6 @@
-package com.donatus.fashion_blog_api.entity;
+package com.donatus.fashion_blog_api.model.entity;
 
-import com.donatus.fashion_blog_api.enums.PostCategory;
+import com.donatus.fashion_blog_api.model.enums.PostCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,7 +35,7 @@ public class PostEntity {
 
 //    private Blob blob;
     @CreationTimestamp
-    @Column(updatable = false, insertable = false)
+    @Column(updatable = false)
     private LocalDateTime postDate;
 
     @UpdateTimestamp

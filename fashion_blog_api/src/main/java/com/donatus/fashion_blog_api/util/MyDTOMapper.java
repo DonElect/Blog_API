@@ -3,9 +3,9 @@ package com.donatus.fashion_blog_api.util;
 import com.donatus.fashion_blog_api.dto.comment.CommentResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
-import com.donatus.fashion_blog_api.entity.CommentsEntity;
-import com.donatus.fashion_blog_api.entity.PostEntity;
-import com.donatus.fashion_blog_api.entity.UserEntity;
+import com.donatus.fashion_blog_api.model.entity.CommentsEntity;
+import com.donatus.fashion_blog_api.model.entity.PostEntity;
+import com.donatus.fashion_blog_api.model.entity.UserEntity;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.donatus.fashion_blog_api.config;
 
-import com.donatus.fashion_blog_api.entity.Roles;
-import com.donatus.fashion_blog_api.entity.UserEntity;
+import com.donatus.fashion_blog_api.model.entity.Roles;
+import com.donatus.fashion_blog_api.model.entity.UserEntity;
 import com.donatus.fashion_blog_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

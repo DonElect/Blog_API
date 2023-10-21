@@ -1,0 +1,7 @@
+package com.donatus.fashion_blog_api.exception;
+
+public class AuthenticationFailedException extends RuntimeException {
+    public AuthenticationFailedException(String message) {
+        super(message);
+    }
+}

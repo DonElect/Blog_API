@@ -1,4 +1,4 @@
-package com.donatus.fashion_blog_api.entity;
+package com.donatus.fashion_blog_api.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

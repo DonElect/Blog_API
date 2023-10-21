@@ -3,8 +3,8 @@ package com.donatus.fashion_blog_api.services.implimenation;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.dto.post.PostRequestDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
-import com.donatus.fashion_blog_api.entity.PostEntity;
-import com.donatus.fashion_blog_api.entity.UserEntity;
+import com.donatus.fashion_blog_api.model.entity.PostEntity;
+import com.donatus.fashion_blog_api.model.entity.UserEntity;
 import com.donatus.fashion_blog_api.exception.PostNotFoundException;
 import com.donatus.fashion_blog_api.exception.UserNotFoundException;
 import com.donatus.fashion_blog_api.repository.PostRepository;
@@ -43,15 +43,13 @@ public class PostServiceImpl implements PostServices {
     @Override
     public List<PostResponseDTO> pagePost(Long adminId, Integer pageNo, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("postDate"));
-
-        Slice<PostEntity> result = postRepo.findPostEntitiesByUserEntityUserId(adminId, pageable);
-
+        Slice<PostEntity> result = postRepo.findByUserEntityUserId(adminId, pageable);
         return result.isEmpty() ? new ArrayList<>() : myDTOMapper.mapPostResponse(result.getContent());
     }
 
     @Override
     public List<UserResponseDTO> pagePostLiker(Long postId, Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("firstName"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("first_name"));
 
         Slice<UserEntity> result = userRepo.findPostLiker(postId, pageable);
 

@@ -1,6 +1,6 @@
 package com.donatus.fashion_blog_api.dto.post;
 
-import com.donatus.fashion_blog_api.enums.PostCategory;
+import com.donatus.fashion_blog_api.model.enums.PostCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -46,14 +46,14 @@ public class SecurityConfig {
                 configure
                         .requestMatchers(antMatcher("/swagger-ui/**")).permitAll()
                         .requestMatchers(antMatcher( "/javainuse-openapi/**")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/client/**")).hasAnyAuthority("USER")
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/user/login")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/user/signup")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/client/**")).hasAnyAuthority("USER")
+                        // Signup and login authorization
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/login")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/signup")).permitAll()
                         // Task security filter
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/task/**")).hasAnyAuthority("USER")
-                        .requestMatchers(antMatcher(HttpMethod.GET, "/task/**/task_id/**")).hasAnyAuthority("USER")
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/task/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.PUT, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/users/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/**")).hasAnyAuthority("USER")
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/task/**/task_id/**")).hasAnyAuthority("USER")
                         .requestMatchers(antMatcher(HttpMethod.DELETE, "/task/**/task_id/**")).hasAnyAuthority("USER")
                         .anyRequest().authenticated());

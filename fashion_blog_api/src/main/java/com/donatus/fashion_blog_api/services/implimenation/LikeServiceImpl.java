@@ -1,9 +1,9 @@
 package com.donatus.fashion_blog_api.services.implimenation;
 
-import com.donatus.fashion_blog_api.entity.*;
 import com.donatus.fashion_blog_api.exception.CommentNotFoundException;
 import com.donatus.fashion_blog_api.exception.PostNotFoundException;
 import com.donatus.fashion_blog_api.exception.UserNotFoundException;
+import com.donatus.fashion_blog_api.model.entity.*;
 import com.donatus.fashion_blog_api.repository.*;
 import com.donatus.fashion_blog_api.services.LikeServices;
 import lombok.RequiredArgsConstructor;

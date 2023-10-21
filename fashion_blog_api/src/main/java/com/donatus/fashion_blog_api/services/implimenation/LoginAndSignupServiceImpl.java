@@ -1,10 +1,12 @@
 package com.donatus.fashion_blog_api.services.implimenation;
 
+import com.donatus.fashion_blog_api.config.JWTGenerator;
+import com.donatus.fashion_blog_api.dto.AuthResponseDTO;
 import com.donatus.fashion_blog_api.dto.LoginDTO;
 import com.donatus.fashion_blog_api.dto.SignupDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
-import com.donatus.fashion_blog_api.entity.Roles;
-import com.donatus.fashion_blog_api.entity.UserEntity;
+import com.donatus.fashion_blog_api.model.entity.Roles;
+import com.donatus.fashion_blog_api.model.entity.UserEntity;
 import com.donatus.fashion_blog_api.exception.EmailAlreadyExistException;
 import com.donatus.fashion_blog_api.exception.InvalidEmailException;
 import com.donatus.fashion_blog_api.exception.UserNotFoundException;
@@ -14,11 +16,12 @@ import com.donatus.fashion_blog_api.repository.UserRepository;
 import com.donatus.fashion_blog_api.services.LoginAndSignupServices;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +31,9 @@ public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
     private final UserRepository userRepo;
     private final RolesRepository rolesRepo;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(13);
+
+    private final AuthenticationManager authenticationManager;
+    private final JWTGenerator jwtGenerator;
 
 
     @Override
@@ -71,17 +77,23 @@ public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
     }
 
     @Override
-    public UserResponseDTO loginUser(LoginDTO admin) {
+    public AuthResponseDTO loginUser(LoginDTO loginDTO) {
 
-        UserEntity userEntity = userRepo.findUserEntityByEmail(admin.getEmail())
+        UserEntity userEntity = userRepo.findUserEntityByEmail(loginDTO.getEmail())
                 .orElseThrow(()-> new InvalidEmailException("Email not registered!"));
 
-        if (!encoder.matches(admin.getPassword(), userEntity.getPassword())){
+        if (!encoder.matches(loginDTO.getPassword(), userEntity.getPassword())){
             System.out.println("I was here");
             throw new WrongPasswordException("Invalid password!");
         }
 
-        return mapper.map(userEntity, UserResponseDTO.class);
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generateToken(authentication);
+
+        return new AuthResponseDTO(token);
     }
 
     @Override

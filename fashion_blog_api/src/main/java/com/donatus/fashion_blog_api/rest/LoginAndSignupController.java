@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class LoginAndSignupController {
 
     private final LoginAndSignupServices services;
-    private final AuthenticationManager authenticationManager;
-    private final JWTGenerator jwtGenerator;
+
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDTO> signUp(@RequestBody SignupDTO signupDTO){
@@ -31,15 +30,7 @@ public class LoginAndSignupController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> logIn(@RequestBody LoginDTO loginDTO){
-
-        services.loginUser(loginDTO);
-
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtGenerator.generateToken(authentication);
-        return new  ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        return new  ResponseEntity<>(services.loginUser(loginDTO), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")

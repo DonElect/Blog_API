@@ -1,4 +1,4 @@
-package com.donatus.fashion_blog_api.enums;
+package com.donatus.fashion_blog_api.model.enums;
 
 public enum PostCategory {
     CLOTHES,

@@ -1,6 +1,6 @@
 package com.donatus.fashion_blog_api.exception;
 
-import com.donatus.fashion_blog_api.entity.ErrorDetails;
+import com.donatus.fashion_blog_api.model.entity.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -77,6 +77,18 @@ public class GlobalExceptionHandler {
                 .message(exception.getMessage())
                 .status(HttpStatus.BAD_REQUEST)
                 .debugMessage("Check the user ID and try again.")
+                .dateTime(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(errorDetails, errorDetails.getStatus());
+    }
+
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<ErrorDetails> handleAuthenticationFailedException(final AuthenticationFailedException exception){
+        ErrorDetails errorDetails = ErrorDetails.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.UNAUTHORIZED)
+                .debugMessage("Your session has expired. Login and try again.")
                 .dateTime(LocalDateTime.now())
                 .build();
 

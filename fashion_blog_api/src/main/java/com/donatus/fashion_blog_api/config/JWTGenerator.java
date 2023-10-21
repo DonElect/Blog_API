@@ -1,10 +1,10 @@
 package com.donatus.fashion_blog_api.config;
 
+import com.donatus.fashion_blog_api.exception.AuthenticationFailedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,7 @@ public class JWTGenerator {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect",ex.fillInStackTrace());
+            throw new AuthenticationFailedException("Token was expired or incorrect");
         }
     }
 }
