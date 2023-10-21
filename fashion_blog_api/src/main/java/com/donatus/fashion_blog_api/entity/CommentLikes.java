@@ -19,7 +19,7 @@ public class CommentLikes {
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "comment_id")
     private CommentsEntity commentsEntity;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,

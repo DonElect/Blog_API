@@ -32,7 +32,7 @@ public class MyDTOMapper {
                 u.getLastName(),
                 u.getEmail(),
                 u.getUserName(),
-                u.getAddress()
+                u.getLocation()
         )).toList();
     }
 

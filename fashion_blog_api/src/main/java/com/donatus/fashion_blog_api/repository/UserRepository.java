@@ -14,11 +14,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     boolean existsByEmail(String email);
     Optional<UserEntity> findUserEntityByEmail(String email);
 
-    @Query(value = "SELECT UserEntity FROM UserEntity \n" +
-            "WHERE userId IN (SELECT userId FROM PostLikes WHERE PostEntity.postId = :postId)")
+    @Query(nativeQuery = true ,value = "SELECT * FROM blog_users \n" +
+            "WHERE user_id IN (SELECT user_id FROM post_likes WHERE post_id = :postId)")
     Slice<UserEntity> findPostLiker(Long postId, Pageable pageable);
 
-    @Query(value = "SELECT UserEntity FROM UserEntity \n" +
-            "WHERE userId IN (SELECT userId FROM CommentLikes WHERE CommentsEntity.commentId = :commentId)")
+    @Query(nativeQuery = true, value = "SELECT * FROM blog_users \n" +
+            "WHERE user_id IN (SELECT user_id FROM comment_likes WHERE comment_id = :commentId)")
     Slice<UserEntity> findCommentLiker(Long commentId, Pageable pageable);
 }

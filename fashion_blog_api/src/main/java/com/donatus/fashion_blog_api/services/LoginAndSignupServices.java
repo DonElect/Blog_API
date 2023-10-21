@@ -5,7 +5,8 @@ import com.donatus.fashion_blog_api.dto.SignupDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 
 public interface LoginAndSignupServices {
-    UserResponseDTO registerAdmin(SignupDTO admin);
-    UserResponseDTO loginAdmin(LoginDTO admin);
-    void removeAdmin(Long adminId);
+    UserResponseDTO registerUser(SignupDTO admin);
+    UserResponseDTO loginUser(LoginDTO admin);
+    void removeUser(Long adminId);
+    UserResponseDTO userDetails(Long userId);
 }

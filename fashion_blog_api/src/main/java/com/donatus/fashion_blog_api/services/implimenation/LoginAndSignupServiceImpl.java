@@ -7,7 +7,9 @@ import com.donatus.fashion_blog_api.entity.Roles;
 import com.donatus.fashion_blog_api.entity.UserEntity;
 import com.donatus.fashion_blog_api.exception.EmailAlreadyExistException;
 import com.donatus.fashion_blog_api.exception.InvalidEmailException;
+import com.donatus.fashion_blog_api.exception.UserNotFoundException;
 import com.donatus.fashion_blog_api.exception.WrongPasswordException;
+import com.donatus.fashion_blog_api.repository.RolesRepository;
 import com.donatus.fashion_blog_api.repository.UserRepository;
 import com.donatus.fashion_blog_api.services.LoginAndSignupServices;
 import lombok.RequiredArgsConstructor;
@@ -21,37 +23,47 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
-    private static boolean isFirst = true;
-    private final Roles role = new Roles();
     private final ModelMapper mapper = new ModelMapper();
 
     private final UserRepository userRepo;
+    private final RolesRepository rolesRepo;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(13);
 
 
     @Override
-    public UserResponseDTO registerAdmin(SignupDTO admin) {
-        if (userRepo.existsByEmail(admin.getEmail())){
+    public UserResponseDTO registerUser(SignupDTO user) {
+        if (userRepo.existsByEmail(user.getEmail())){
             throw new EmailAlreadyExistException("Email already exist!");
         }
 
-        if (!admin.getPassword().equals(admin.getConfirmPassword())){
+        if (!user.getPassword().equals(user.getConfirmPassword())){
             throw new WrongPasswordException("Password mismatch!");
         }
 
         // Encrypt password
-        admin.setPassword(encoder.encode(admin.getPassword()));
+        user.setPassword(encoder.encode(user.getPassword()));
 
-        UserEntity newUser = mapper.map(admin, UserEntity.class);
+        UserEntity newUser = mapper.map(user, UserEntity.class);
 
-        if (isFirst){
-            role.setName("SUPER_ADMIN");
+        System.out.println(rolesRepo.existsByName("SUPER_ADMIN"));
+        if (rolesRepo.existsByName("SUPER_ADMIN")){
+            Roles role1 = new Roles();
+            role1.setName("USER");
+            newUser.addRoles(role1);
+
+            System.out.println(newUser);
+
+            UserEntity savedAdmin = userRepo.save(newUser);
+            return mapper.map(savedAdmin, UserResponseDTO.class);
         }
-        else {
-            role.setName("USER");
-        }
 
-        newUser.setRoles(new ArrayList<>(List.of(role)));
+        Roles role1 = new Roles();
+        Roles role2 = new Roles();
+
+        role2.setName("SUPER_ADMIN");
+        newUser.addRoles(role2);
+        role1.setName("USER");
+        newUser.addRoles(role1);
 
         UserEntity savedAdmin = userRepo.save(newUser);
 
@@ -59,12 +71,13 @@ public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
     }
 
     @Override
-    public UserResponseDTO loginAdmin(LoginDTO admin) {
+    public UserResponseDTO loginUser(LoginDTO admin) {
 
         UserEntity userEntity = userRepo.findUserEntityByEmail(admin.getEmail())
                 .orElseThrow(()-> new InvalidEmailException("Email not registered!"));
 
         if (!encoder.matches(admin.getPassword(), userEntity.getPassword())){
+            System.out.println("I was here");
             throw new WrongPasswordException("Invalid password!");
         }
 
@@ -72,7 +85,15 @@ public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
     }
 
     @Override
-    public void removeAdmin(Long adminId) {
+    public void removeUser(Long adminId) {
         userRepo.deleteById(adminId);
+    }
+
+    @Override
+    public UserResponseDTO userDetails(Long userId) {
+        UserEntity user = userRepo.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Invalid user ID!"));
+
+        return mapper.map(user, UserResponseDTO.class);
     }
 }

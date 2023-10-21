@@ -1,10 +1,7 @@
 package com.donatus.fashion_blog_api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "blog_users")
 public class UserEntity {
@@ -41,7 +39,7 @@ public class UserEntity {
     private String userName;
 
     @Column(length = 45, nullable = false)
-    private String address;
+    private String location;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PostEntity> postList = new ArrayList<>();
@@ -59,8 +57,16 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "role_id"))
-    private List<Roles> roles = new ArrayList<>();
+    private List<Roles> roles;
 
+
+    public void addRoles(Roles role){
+        if (roles == null){
+            roles = new ArrayList<>();
+        }
+
+        roles.add(role);
+    }
 
     public void addPost(PostEntity post){
         if (postList == null){

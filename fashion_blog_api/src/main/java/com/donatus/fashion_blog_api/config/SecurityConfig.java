@@ -47,8 +47,8 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/swagger-ui/**")).permitAll()
                         .requestMatchers(antMatcher( "/javainuse-openapi/**")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.GET, "/client/**")).hasAnyAuthority("USER")
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/client/login")).permitAll()
-                        .requestMatchers(antMatcher(HttpMethod.POST, "/client/signup")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/user/login")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/user/signup")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.DELETE, "/client/**")).hasAnyAuthority("USER")
                         // Task security filter
                         .requestMatchers(antMatcher(HttpMethod.GET, "/task/**")).hasAnyAuthority("USER")

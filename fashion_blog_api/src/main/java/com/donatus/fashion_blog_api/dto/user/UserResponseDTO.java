@@ -15,5 +15,5 @@ public class UserResponseDTO {
     private String lastName;
     private String email;
     private String userName;
-    private String address;
+    private String location;
 }
