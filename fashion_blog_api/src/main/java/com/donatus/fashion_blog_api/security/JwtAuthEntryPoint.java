@@ -1,4 +1,4 @@
-package com.donatus.fashion_blog_api.config;
+package com.donatus.fashion_blog_api.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

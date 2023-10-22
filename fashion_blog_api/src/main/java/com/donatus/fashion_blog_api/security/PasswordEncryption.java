@@ -1,4 +1,4 @@
-package com.donatus.fashion_blog_api.util;
+package com.donatus.fashion_blog_api.security;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.donatus.fashion_blog_api.services.implimenation;
 
-import com.donatus.fashion_blog_api.config.JWTGenerator;
+import com.donatus.fashion_blog_api.security.JWTGenerator;
 import com.donatus.fashion_blog_api.dto.AuthResponseDTO;
 import com.donatus.fashion_blog_api.dto.LoginDTO;
 import com.donatus.fashion_blog_api.dto.SignupDTO;

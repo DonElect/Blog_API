@@ -1,5 +1,6 @@
-package com.donatus.fashion_blog_api.config;
+package com.donatus.fashion_blog_api.security;
 
+import com.donatus.fashion_blog_api.config.CustomUserDetailsServices;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private JWTGenerator tokenGenerator;
 
     @Autowired
-    private  CustomUserDetailsServices userDetailsServices;
+    private CustomUserDetailsServices userDetailsServices;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,

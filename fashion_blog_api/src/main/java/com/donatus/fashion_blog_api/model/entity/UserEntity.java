@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 @Entity
 @Table(name = "blog_users")
 public class UserEntity {

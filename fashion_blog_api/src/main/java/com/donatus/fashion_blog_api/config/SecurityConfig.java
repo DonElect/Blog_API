@@ -1,5 +1,7 @@
 package com.donatus.fashion_blog_api.config;
 
+import com.donatus.fashion_blog_api.security.JWTAuthenticationFilter;
+import com.donatus.fashion_blog_api.security.JwtAuthEntryPoint;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

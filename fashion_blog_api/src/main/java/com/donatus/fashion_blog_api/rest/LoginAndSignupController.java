@@ -1,6 +1,5 @@
 package com.donatus.fashion_blog_api.rest;
 
-import com.donatus.fashion_blog_api.config.JWTGenerator;
 import com.donatus.fashion_blog_api.dto.AuthResponseDTO;
 import com.donatus.fashion_blog_api.dto.LoginDTO;
 import com.donatus.fashion_blog_api.dto.SignupDTO;
@@ -9,10 +8,6 @@ import com.donatus.fashion_blog_api.services.LoginAndSignupServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor

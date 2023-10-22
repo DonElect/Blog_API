@@ -4,15 +4,13 @@ package com.donatus.fashion_blog_api.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SignupDTO {
     @NotBlank(message = "*required")
     @Size(min = 3, max = 25, message = "too long")
