@@ -45,6 +45,9 @@ public class PostEntity {
     @Column(nullable = false)
     private PostCategory category;
 
+    @OneToMany(mappedBy = "postEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ImageData> imageData;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
                                                     CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "admin_id")
@@ -55,6 +58,15 @@ public class PostEntity {
 
     @OneToMany(mappedBy = "postEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommentsEntity> comments = new ArrayList<>();
+
+    public void addPostImage(ImageData image){
+        if (imageData == null){
+            imageData = new ArrayList<>();
+        }
+
+        imageData.add(image);
+        image.setPostEntity(this);
+    }
 
     public void addComment(CommentsEntity comment){
         if (comments == null){

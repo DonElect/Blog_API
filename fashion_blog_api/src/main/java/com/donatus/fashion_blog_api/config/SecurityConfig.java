@@ -51,8 +51,11 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/users/signup")).permitAll()
                         // Post Authorizations
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/posts/images/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/v1/posts/images/**")).hasAnyAuthority("SUPER_ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/likes/**")).hasAnyAuthority("SUPER_ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/v1/posts/**")).hasAnyAuthority("SUPER_ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/posts/**")).hasAnyAuthority("USER")
                         // Comment Authorizations
                         .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/comments/**")).hasAnyAuthority("USER")

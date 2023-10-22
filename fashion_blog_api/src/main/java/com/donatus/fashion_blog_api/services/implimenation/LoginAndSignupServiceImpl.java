@@ -51,13 +51,10 @@ public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
 
         UserEntity newUser = mapper.map(user, UserEntity.class);
 
-        System.out.println(rolesRepo.existsByName("SUPER_ADMIN"));
         if (rolesRepo.existsByName("SUPER_ADMIN")){
             Roles role1 = new Roles();
             role1.setName("USER");
             newUser.addRoles(role1);
-
-            System.out.println(newUser);
 
             UserEntity savedAdmin = userRepo.save(newUser);
             return mapper.map(savedAdmin, UserResponseDTO.class);
@@ -83,7 +80,6 @@ public class LoginAndSignupServiceImpl implements LoginAndSignupServices {
                 .orElseThrow(()-> new InvalidEmailException("Email not registered!"));
 
         if (!encoder.matches(loginDTO.getPassword(), userEntity.getPassword())){
-            System.out.println("I was here");
             throw new WrongPasswordException("Invalid password!");
         }
 

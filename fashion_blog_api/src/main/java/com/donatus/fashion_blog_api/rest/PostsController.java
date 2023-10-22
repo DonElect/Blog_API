@@ -1,5 +1,6 @@
 package com.donatus.fashion_blog_api.rest;
 
+import com.donatus.fashion_blog_api.dto.ImageDataResponseDTO;
 import com.donatus.fashion_blog_api.dto.post.PostRequestDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
@@ -7,7 +8,9 @@ import com.donatus.fashion_blog_api.services.PostServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,8 +22,14 @@ public class PostsController {
 
     @PostMapping("/{adminId}")
     public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequestDTO,
-                                                      @PathVariable Long adminId){
+                                                      @PathVariable Long adminId) {
         return ResponseEntity.ok(postServices.makePost(adminId, postRequestDTO));
+    }
+
+    @PostMapping("/images/{postId}")
+    public ResponseEntity<ImageDataResponseDTO> savePostImage(@RequestParam("image") MultipartFile file,
+                                                              @PathVariable Long postId) throws IOException {
+       return ResponseEntity.ok(postServices.uploadPostImage(file, postId));
     }
 
     @PutMapping("/{adminId}/{postId}")
@@ -55,6 +64,13 @@ public class PostsController {
         postServices.deletePost(postId);
 
         return ResponseEntity.ok("Post with ID: "+postId+" deleted successfully.");
+    }
+
+    @DeleteMapping("/images/{imageId}")
+    public ResponseEntity<String> deleteImage(@PathVariable Long imageId){
+        postServices.deleteAPostImage(imageId);
+
+        return ResponseEntity.ok("Post with ID: "+imageId+" deleted successfully.");
     }
 
 }

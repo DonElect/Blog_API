@@ -1,9 +1,11 @@
 package com.donatus.fashion_blog_api.util;
 
+import com.donatus.fashion_blog_api.dto.ImageDataResponseDTO;
 import com.donatus.fashion_blog_api.dto.comment.CommentResponseDTO;
-import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
+import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.model.entity.CommentsEntity;
+import com.donatus.fashion_blog_api.model.entity.ImageData;
 import com.donatus.fashion_blog_api.model.entity.PostEntity;
 import com.donatus.fashion_blog_api.model.entity.UserEntity;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,12 @@ public class MyDTOMapper {
                 p.getPostBody(),
                 p.getPostDate(),
                 p.getPostUpdate(),
-                p.getCategory()
+                p.getCategory(),
+                p.getImageData().stream().map(im -> ImageDataResponseDTO.builder()
+                        .imageId(im.getImageId())
+                        .postId(p.getPostId())
+                        .imageUrl(im.getImageUrl())
+                        .build()).toList()
         )).toList();
     }
 
@@ -43,5 +50,13 @@ public class MyDTOMapper {
                 c.getCommentDate(),
                 c.getCommentUpdate()
         )).toList();
+    }
+
+    public ImageDataResponseDTO mapImageResponse(ImageData imageData){
+        return ImageDataResponseDTO.builder()
+                .imageId(imageData.getImageId())
+                .imageUrl(imageData.getImageUrl())
+                .postId(imageData.getPostEntity().getPostId())
+                .build();
     }
 }
