@@ -124,4 +124,6 @@ public class PostServiceImpl implements PostServices {
     public void deleteAPostImage(Long imageId) {
         imageRepo.deleteById(imageId);
     }
+
+
 }
