@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class SignupDTO {
-    @NotBlank(message = "*required")
+    @NotBlank(message = "First name is required.")
     @Size(min = 3, max = 25, message = "too long")
     private String firstName;
 
@@ -20,19 +20,19 @@ public class SignupDTO {
     private String lastName;
 
     @Size(min = 8, max = 25)
-    @NotBlank(message = "*required")
+    @NotBlank(message = "Email is required.")
     @Email(message = "Invalid email")
     private String email;
 
-    @NotBlank(message = "*required")
+    @NotBlank(message = "Password is required")
     @Size(min = 4, max = 15)
     private String password;
 
-    @NotBlank(message = "*required")
+    @NotBlank(message = "Confirm password is required")
     @Size(min = 4, max = 15)
     private String confirmPassword;
 
-    @NotBlank(message = "*required")
+    @NotBlank(message = "Username is required")
     @Size(min = 3, max = 15)
     private String userName;
 

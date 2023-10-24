@@ -1,14 +1,12 @@
 package com.donatus.fashion_blog_api.dto.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserResponseDTO {
     private Long userId;
     private String firstName;

@@ -1,12 +1,16 @@
 package com.donatus.fashion_blog_api.exception;
 
 import com.donatus.fashion_blog_api.model.entity.ErrorDetails;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -93,5 +97,18 @@ public class GlobalExceptionHandler {
                 .build();
 
         return new ResponseEntity<>(errorDetails, errorDetails.getStatus());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<ErrorDetails> handleGlobalExceptions(MethodArgumentNotValidException ex) {
+        String[] errors = ex.getBindingResult().getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toArray(String[]::new);
+        ErrorDetails response = ErrorDetails.builder()
+                .message("Invalid input(s)")
+                .status(HttpStatus.NOT_ACCEPTABLE)
+                .debugMessage(Arrays.toString(errors))
+                .dateTime(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

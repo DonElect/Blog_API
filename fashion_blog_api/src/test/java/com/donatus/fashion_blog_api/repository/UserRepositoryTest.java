@@ -18,7 +18,6 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
     private UserEntity user1;
-    private UserEntity user2;
     UserEntity savedUser1;
     UserEntity savedUser2;
 
@@ -34,7 +33,7 @@ class UserRepositoryTest {
                 .location("Edo State")
                 .build();
 
-        user2 = UserEntity.builder()
+        UserEntity user2 = UserEntity.builder()
                 .firstName("Jane")
                 .lastName("Mary")
                 .email("mary@gmail.com")

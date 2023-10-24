@@ -5,6 +5,7 @@ import com.donatus.fashion_blog_api.dto.LoginDTO;
 import com.donatus.fashion_blog_api.dto.SignupDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.services.LoginAndSignupServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,13 @@ public class LoginAndSignupController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDTO> signUp(@RequestBody SignupDTO signupDTO){
-        return ResponseEntity.ok(services.registerUser(signupDTO));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<UserResponseDTO> signUp(@RequestBody @Valid SignupDTO signupDTO){
+        return new ResponseEntity<>(services.registerUser(signupDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> logIn(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<AuthResponseDTO> logIn(@RequestBody @Valid LoginDTO loginDTO){
         return new  ResponseEntity<>(services.loginUser(loginDTO), HttpStatus.OK);
     }
 
@@ -36,6 +38,6 @@ public class LoginAndSignupController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId){
         services.removeUser(userId);
-        return ResponseEntity.ok("User with ID: "+userId+" deleted");
+        return ResponseEntity.status(202).body("User with ID: "+userId+" deleted");
     }
 }

@@ -5,7 +5,9 @@ import com.donatus.fashion_blog_api.dto.post.PostRequestDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.services.PostServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,19 +23,19 @@ public class PostsController {
 
 
     @PostMapping("/{adminId}")
-    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequestDTO,
+    public ResponseEntity<PostResponseDTO> createPost(@RequestBody @Valid PostRequestDTO postRequestDTO,
                                                       @PathVariable Long adminId) {
-        return ResponseEntity.ok(postServices.makePost(adminId, postRequestDTO));
+        return new ResponseEntity<>(postServices.makePost(adminId, postRequestDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/images/{postId}")
     public ResponseEntity<ImageDataResponseDTO> savePostImage(@RequestParam("image") MultipartFile file,
                                                               @PathVariable Long postId) throws IOException {
-       return ResponseEntity.ok(postServices.uploadPostImage(file, postId));
+       return new ResponseEntity<>(postServices.uploadPostImage(file, postId), HttpStatus.CREATED);
     }
 
     @PutMapping("/{adminId}/{postId}")
-    public ResponseEntity<PostResponseDTO> updatePost(@RequestBody PostRequestDTO postRequestDTO,
+    public ResponseEntity<PostResponseDTO> updatePost(@RequestBody @Valid PostRequestDTO postRequestDTO,
                                                       @PathVariable Long adminId,
                                                       @PathVariable Long postId){
         return ResponseEntity.ok(postServices.editPost(adminId, postId, postRequestDTO));

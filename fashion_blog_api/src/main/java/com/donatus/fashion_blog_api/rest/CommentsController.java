@@ -4,7 +4,9 @@ import com.donatus.fashion_blog_api.dto.comment.CommentRequestDTO;
 import com.donatus.fashion_blog_api.dto.comment.CommentResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
 import com.donatus.fashion_blog_api.services.CommentServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +19,10 @@ public class CommentsController {
     private final CommentServices commentServices;
 
     @PostMapping("/{postId}/{userId}")
-    public ResponseEntity<CommentResponseDTO> createComment(@RequestBody CommentRequestDTO comment,
+    public ResponseEntity<CommentResponseDTO> createComment(@RequestBody @Valid CommentRequestDTO comment,
                                                             @PathVariable Long postId,
                                                             @PathVariable Long userId){
-        return ResponseEntity.ok(commentServices.makeComment(postId, userId, comment));
+        return new ResponseEntity<>(commentServices.makeComment(postId, userId, comment), HttpStatus.CREATED);
     }
 
     @GetMapping("/{userId}/{commentId}")
@@ -30,7 +32,7 @@ public class CommentsController {
     }
 
     @PutMapping("/{userId}/{commentId}")
-    public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody CommentRequestDTO comment,
+    public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentRequestDTO comment,
                                                             @PathVariable Long userId,
                                                             @PathVariable Long commentId){
         return ResponseEntity.ok(commentServices.editComment(userId, commentId, comment));
