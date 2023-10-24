@@ -3,7 +3,6 @@ package com.donatus.fashion_blog_api.dto.post;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter

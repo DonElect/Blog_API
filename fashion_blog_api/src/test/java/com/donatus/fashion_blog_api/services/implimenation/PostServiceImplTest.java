@@ -1,14 +1,10 @@
 package com.donatus.fashion_blog_api.services.implimenation;
 
 import com.cloudinary.Cloudinary;
-import com.donatus.fashion_blog_api.config.cloudinary.CloudinaryConfig;
-import com.donatus.fashion_blog_api.dto.ImageDataResponseDTO;
-import com.donatus.fashion_blog_api.dto.LoginDTO;
-import com.donatus.fashion_blog_api.dto.SignupDTO;
+import com.cloudinary.utils.ObjectUtils;
 import com.donatus.fashion_blog_api.dto.post.PostRequestDTO;
 import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
-import com.donatus.fashion_blog_api.model.entity.ImageData;
 import com.donatus.fashion_blog_api.model.entity.PostEntity;
 import com.donatus.fashion_blog_api.model.entity.Roles;
 import com.donatus.fashion_blog_api.model.entity.UserEntity;
@@ -16,9 +12,7 @@ import com.donatus.fashion_blog_api.repository.ImageDataRepository;
 import com.donatus.fashion_blog_api.repository.PostRepository;
 import com.donatus.fashion_blog_api.repository.RolesRepository;
 import com.donatus.fashion_blog_api.repository.UserRepository;
-import com.donatus.fashion_blog_api.security.JWTGenerator;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,16 +23,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +38,10 @@ class PostServiceImplTest {
     @InjectMocks
     private PostServiceImpl service;
     @InjectMocks
-    private Cloudinary cloudinary = new Cloudinary("cloudinary://hello");
+    private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dfjzskbe6",
+            "api_key", "473221831389556",
+            "api_secret", "Yy8o03dCGqc219TUQCV9OQJl1Wc"));
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -156,7 +150,7 @@ class PostServiceImplTest {
 //
 //        String imageUrl = "the url";
 //
-////        when(cloudinary.uploader().upload(Mockito.any(), Mockito.any()).get(Mockito.anyString()).toString()).thenReturn(notNull());
+//        when(cloudinary.uploader().upload(Mockito.any(), Mockito.any()).get(Mockito.anyString()).toString()).thenReturn(imageUrl);
 ////        when(this.cloudinary).thenReturn(notNull());
 ////        when(service.getImageUrl(Mockito.any())).thenReturn(imageUrl);
 //        when(postRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(post));
@@ -165,6 +159,7 @@ class PostServiceImplTest {
 //        ImageDataResponseDTO imageDataResponseDTO = service.uploadPostImage(file, 1L);
 //
 //        Assertions.assertThat(imageDataResponseDTO).isNotNull();
+//        IntStream.
     }
 
     @Test
