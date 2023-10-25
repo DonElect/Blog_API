@@ -1,15 +1,9 @@
 package com.donatus.fashion_blog_api.rest;
 
-import com.donatus.fashion_blog_api.dto.ImageDataResponseDTO;
 import com.donatus.fashion_blog_api.dto.comment.CommentRequestDTO;
 import com.donatus.fashion_blog_api.dto.comment.CommentResponseDTO;
-import com.donatus.fashion_blog_api.dto.post.PostRequestDTO;
-import com.donatus.fashion_blog_api.dto.post.PostResponseDTO;
 import com.donatus.fashion_blog_api.dto.user.UserResponseDTO;
-import com.donatus.fashion_blog_api.model.enums.PostCategory;
 import com.donatus.fashion_blog_api.services.CommentServices;
-import com.donatus.fashion_blog_api.services.PostServices;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,13 +20,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
