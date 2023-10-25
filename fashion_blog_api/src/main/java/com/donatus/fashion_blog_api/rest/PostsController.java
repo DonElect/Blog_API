@@ -65,14 +65,14 @@ public class PostsController {
     public ResponseEntity<String> removePost(@PathVariable Long postId){
         postServices.deletePost(postId);
 
-        return ResponseEntity.ok("Post with ID: "+postId+" deleted successfully.");
+        return ResponseEntity.status(202).body("Post with ID: "+postId+" deleted successfully.");
     }
 
     @DeleteMapping("/images/{imageId}")
     public ResponseEntity<String> deleteImage(@PathVariable Long imageId){
         postServices.deleteAPostImage(imageId);
 
-        return ResponseEntity.ok("Post with ID: "+imageId+" deleted successfully.");
+        return ResponseEntity.status(202).body("Post with ID: "+imageId+" deleted successfully.");
     }
 
 }

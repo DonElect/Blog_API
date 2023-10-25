@@ -3,10 +3,7 @@ package com.donatus.fashion_blog_api.dto.post;
 import com.donatus.fashion_blog_api.dto.ImageDataResponseDTO;
 import com.donatus.fashion_blog_api.model.entity.ImageData;
 import com.donatus.fashion_blog_api.model.enums.PostCategory;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PostResponseDTO {
     private Long postId;
     private String postAuthor;
