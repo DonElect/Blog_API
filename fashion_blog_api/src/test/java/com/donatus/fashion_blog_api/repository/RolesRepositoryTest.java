@@ -9,7 +9,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @DataJpaTest
@@ -39,7 +39,7 @@ class RolesRepositoryTest {
                 .confirmPassword("password")
                 .userName("Miko")
                 .location("Edo State")
-                .roles(new ArrayList<>(List.of(role1)))
+                .roles(new HashSet<>(List.of(role1)))
                 .build();
 
         UserEntity user2 = UserEntity.builder()
@@ -50,7 +50,7 @@ class RolesRepositoryTest {
                 .confirmPassword("password")
                 .userName("Mary")
                 .location("Lagos State")
-                .roles(new ArrayList<>(List.of(role2)))
+                .roles(new HashSet<>(List.of(role2)))
                 .build();
 
         userRepository.save(user1);

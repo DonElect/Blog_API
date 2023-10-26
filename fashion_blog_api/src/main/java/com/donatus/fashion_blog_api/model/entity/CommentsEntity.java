@@ -7,8 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -45,12 +45,12 @@ public class CommentsEntity {
 
 
     @OneToMany(mappedBy = "commentsEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommentLikes> likes = new ArrayList<>();
+    private Set<CommentLikes> likes = new HashSet<>();
 
 
     public void addCommentLikes(CommentLikes like){
         if (likes == null){
-            likes = new ArrayList<>();
+            likes = new HashSet<>();
         }
 
         likes.add(like);

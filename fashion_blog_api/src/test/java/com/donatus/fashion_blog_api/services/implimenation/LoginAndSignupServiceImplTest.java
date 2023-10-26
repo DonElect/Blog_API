@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ class LoginAndSignupServiceImplTest {
                 .confirmPassword("password")
                 .userName("Miko")
                 .location("Edo State")
-                .roles(new ArrayList<>(List.of(role)))
+                .roles(new HashSet<>(List.of(role)))
                 .build();
 
 

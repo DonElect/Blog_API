@@ -3,8 +3,8 @@ package com.donatus.fashion_blog_api.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,27 +43,27 @@ public class UserEntity {
     private String location;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PostEntity> postList = new ArrayList<>();
+    private Set<PostEntity> postList = new HashSet<>();
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommentsEntity> comments = new ArrayList<>();
+    private Set<CommentsEntity> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PostLikes> postLikes = new ArrayList<>();
+    private Set<PostLikes> postLikes = new HashSet<>();
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommentLikes> commentLikes = new ArrayList<>();
+    private Set<CommentLikes> commentLikes = new HashSet<>();
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "role_id"))
-    private List<Roles> roles;
+    private Set<Roles> roles;
 
 
     public void addRoles(Roles role){
         if (roles == null){
-            roles = new ArrayList<>();
+            roles = new HashSet<>();
         }
 
         roles.add(role);
@@ -71,7 +71,7 @@ public class UserEntity {
 
     public void addPost(PostEntity post){
         if (postList == null){
-            postList = new ArrayList<>();
+            postList = new HashSet<>();
         }
 
         postList.add(post);
@@ -80,7 +80,7 @@ public class UserEntity {
 
     public void addComment(CommentsEntity comment){
         if (comments == null){
-            comments = new ArrayList<>();
+            comments = new HashSet<>();
         }
 
         comments.add(comment);
@@ -89,7 +89,7 @@ public class UserEntity {
 
     public void addPostLike(PostLikes like){
         if (postLikes == null){
-            postLikes = new ArrayList<>();
+            postLikes = new HashSet<>();
         }
 
         postLikes.add(like);
@@ -98,7 +98,7 @@ public class UserEntity {
 
     public void addCommentLike(CommentLikes like){
         if (commentLikes == null){
-            commentLikes = new ArrayList<>();
+            commentLikes = new HashSet<>();
         }
 
         commentLikes.add(like);

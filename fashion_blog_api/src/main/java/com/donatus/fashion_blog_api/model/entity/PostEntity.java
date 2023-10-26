@@ -7,8 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -44,7 +44,7 @@ public class PostEntity {
     private PostCategory category;
 
     @OneToMany(mappedBy = "postEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<ImageData> imageData;
+    private Set<ImageData> imageData;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
                                                     CascadeType.PERSIST, CascadeType.REFRESH})
@@ -52,14 +52,14 @@ public class PostEntity {
     private UserEntity userEntity;
 
     @OneToMany(mappedBy = "postEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PostLikes> likes = new ArrayList<>();
+    private Set<PostLikes> likes = new HashSet<>();
 
     @OneToMany(mappedBy = "postEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommentsEntity> comments = new ArrayList<>();
+    private Set<CommentsEntity> comments = new HashSet<>();
 
     public void addPostImage(ImageData image){
         if (imageData == null){
-            imageData = new ArrayList<>();
+            imageData = new HashSet<>();
         }
 
         imageData.add(image);
@@ -68,7 +68,7 @@ public class PostEntity {
 
     public void addComment(CommentsEntity comment){
         if (comments == null){
-            comments = new ArrayList<>();
+            comments = new HashSet<>();
         }
 
         comments.add(comment);
@@ -77,7 +77,7 @@ public class PostEntity {
 
     public void addPostLike(PostLikes like){
         if (likes == null){
-            likes = new ArrayList<>();
+            likes = new HashSet<>();
         }
 
         likes.add(like);

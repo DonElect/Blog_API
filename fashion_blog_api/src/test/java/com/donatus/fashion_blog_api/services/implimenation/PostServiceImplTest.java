@@ -25,10 +25,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 
@@ -69,7 +66,7 @@ class PostServiceImplTest {
                 .confirmPassword("password")
                 .userName("Miko")
                 .location("Edo State")
-                .roles(new ArrayList<>(List.of(role)))
+                .roles(new HashSet<>(List.of(role)))
                 .build();
 
         postRequestDTO = PostRequestDTO.builder()

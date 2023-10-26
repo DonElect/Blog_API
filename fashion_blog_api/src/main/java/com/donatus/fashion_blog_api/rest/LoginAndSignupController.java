@@ -20,7 +20,6 @@ public class LoginAndSignupController {
 
 
     @PostMapping("/signup")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserResponseDTO> signUp(@RequestBody @Valid SignupDTO signupDTO){
         return new ResponseEntity<>(services.registerUser(signupDTO), HttpStatus.CREATED);
     }
