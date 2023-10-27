@@ -37,11 +37,11 @@ class LikesControllerTest {
 
     @Test
     void likePost() throws Exception {
-        when(likeServices.likePost(Mockito.anyLong(), Mockito.anyLong()))
+        when(likeServices.likePost(Mockito.anyLong()))
                 .thenReturn(true);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/likes/posts/{userId}/{postId}",
-                        1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/likes/posts/{postId}",
+                         1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockMvcBuilders.standaloneSetup(likesController)
@@ -54,11 +54,11 @@ class LikesControllerTest {
 
     @Test
     void likeComment() throws Exception {
-        when(likeServices.likeComment(Mockito.anyLong(), Mockito.anyLong()))
+        when(likeServices.likeComment(Mockito.anyLong()))
                 .thenReturn(true);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/likes/comments/{userId}/{commentId}",
-                        1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/likes/comments/{commentId}",
+                         1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockMvcBuilders.standaloneSetup(likesController)

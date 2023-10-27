@@ -20,6 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +41,8 @@ class CommentServiceImplTest {
     private PostRepository postRepo;
     @Mock
     private CommentRepository commentRepo;
+    @Mock
+    private Authentication authentication;
     private CommentRequestDTO comment;
 
 
@@ -47,6 +51,8 @@ class CommentServiceImplTest {
         comment = CommentRequestDTO.builder()
                 .comment("How far my guy!")
                 .build();
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Test
@@ -55,11 +61,12 @@ class CommentServiceImplTest {
         PostEntity post = Mockito.mock(PostEntity.class);
         CommentsEntity newComment = Mockito.mock(CommentsEntity.class);
 
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email@gmail.com");
         when(postRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(post));
-        when(userRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
+        when(userRepo.findUserEntityByEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(user));
         when(commentRepo.save(Mockito.any(CommentsEntity.class))).thenReturn(newComment);
 
-        CommentResponseDTO commentResponseDTO = commentService.makeComment(1L, 1L, comment);
+        CommentResponseDTO commentResponseDTO = commentService.makeComment(1L,  comment);
 
         Assertions.assertThat(commentResponseDTO).isNotNull();
     }
@@ -68,10 +75,10 @@ class CommentServiceImplTest {
     void viewComment() {
         CommentsEntity newComment = Mockito.mock(CommentsEntity.class);
 
-        when(commentRepo.findCommentsEntityByUserEntityUserIdAndCommentId(Mockito.anyLong(), Mockito.anyLong()))
+        when(commentRepo.findById(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(newComment));
 
-        CommentResponseDTO commentResponseDTO = commentService.viewComment(1L, 1L);
+        CommentResponseDTO commentResponseDTO = commentService.viewComment( 1L);
 
         Assertions.assertThat(commentResponseDTO).isNotNull();
     }
@@ -82,12 +89,13 @@ class CommentServiceImplTest {
         CommentsEntity newComment = Mockito.mock(CommentsEntity.class);
         CommentsEntity oldComment = Mockito.mock(CommentsEntity.class);
 
-        when(userRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
-        when(commentRepo.findCommentsEntityByUserEntityUserIdAndCommentId(Mockito.anyLong(), Mockito.anyLong()))
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email@gmail.com");
+        when(userRepo.findUserEntityByEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(user));
+        when(commentRepo.findById(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(oldComment));
         when(commentRepo.save(Mockito.any(CommentsEntity.class))).thenReturn(newComment);
 
-        CommentResponseDTO commentResponseDTO = commentService.editComment(1L, 1L, comment);
+        CommentResponseDTO commentResponseDTO = commentService.editComment( 1L, comment);
 
         Assertions.assertThat(commentResponseDTO).isNotNull();
     }

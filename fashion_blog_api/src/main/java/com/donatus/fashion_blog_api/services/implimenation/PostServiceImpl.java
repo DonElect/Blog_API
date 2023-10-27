@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,17 +44,17 @@ public class PostServiceImpl implements PostServices {
 
 
     @Override
-    public PostResponseDTO viewPost(Long userId, Long postId) {
-        PostEntity post = postRepo.findPostEntityByUserEntityUserIdAndPostId(userId, postId)
+    public PostResponseDTO viewPost(Long postId) {
+        PostEntity post = postRepo.findByPostId(postId)
                 .orElseThrow(() -> new PostNotFoundException("No post found!"));
 
         return mapper.map(post, PostResponseDTO.class);
     }
 
     @Override
-    public List<PostResponseDTO> pagePost(Long adminId, Integer pageNo, Integer pageSize) {
+    public List<PostResponseDTO> pagePost(Integer pageNo, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("postDate"));
-        Slice<PostEntity> result = postRepo.findByUserEntityUserId(adminId, pageable);
+        Slice<PostEntity> result = postRepo.findAll(pageable);
         return result.isEmpty() ? new ArrayList<>() : myDTOMapper.mapPostResponse(result.getContent());
     }
 
@@ -67,9 +68,11 @@ public class PostServiceImpl implements PostServices {
     }
 
     @Override
-    public PostResponseDTO makePost(Long adminId, PostRequestDTO post)  {
-        UserEntity admin = userRepo.findById(adminId)
-                .orElseThrow(() -> new UserNotFoundException("No admin with id: "+ adminId+" found."));
+    public PostResponseDTO makePost(PostRequestDTO post)  {
+        String email =  SecurityContextHolder.getContext().getAuthentication().getName();
+
+        UserEntity admin = userRepo.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Admin with email: "+ email+" not found."));
 
         PostEntity newPost = mapper.map(post, PostEntity.class);
 
@@ -79,9 +82,11 @@ public class PostServiceImpl implements PostServices {
     }
 
     @Override
-    public PostResponseDTO editPost(Long adminId, Long postId, PostRequestDTO post) {
-        UserEntity admin = userRepo.findById(adminId)
-                .orElseThrow(() -> new UserNotFoundException("No admin with id: "+ adminId+" found."));
+    public PostResponseDTO editPost(Long postId, PostRequestDTO post) {
+        String email =  SecurityContextHolder.getContext().getAuthentication().getName();
+
+        UserEntity admin = userRepo.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("Admin with email: "+ email+" not found."));
 
         PostEntity oldPost = postRepo.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Post with id: "+postId+" not found."));
@@ -124,6 +129,4 @@ public class PostServiceImpl implements PostServices {
     public void deleteAPostImage(Long imageId) {
         imageRepo.deleteById(imageId);
     }
-
-
 }

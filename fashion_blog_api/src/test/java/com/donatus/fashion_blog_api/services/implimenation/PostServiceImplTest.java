@@ -20,9 +20,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.util.*;
@@ -35,10 +35,7 @@ class PostServiceImplTest {
     @InjectMocks
     private PostServiceImpl service;
     @InjectMocks
-    private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", "dfjzskbe6",
-            "api_key", "473221831389556",
-            "api_secret", "Yy8o03dCGqc219TUQCV9OQJl1Wc"));
+    private Cloudinary cloudinary = new Cloudinary();
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -47,10 +44,11 @@ class PostServiceImplTest {
     private PostRepository postRepository;
     @Mock
     private ImageDataRepository imageRepo;
+    @Mock
+    private Authentication authentication;
 
     private UserEntity user1;
-    private PostEntity postEntity;
-    private PostResponseDTO postResponseDTO;
+
     private PostRequestDTO postRequestDTO;
 
     @BeforeEach
@@ -75,15 +73,18 @@ class PostServiceImplTest {
                 .postTitle("Testing")
                 .postBody("How to test a post service")
                 .build();
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Test
     void makePost() {
         PostEntity post = Mockito.mock(PostEntity.class);
-        when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user1));
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email@gmail.com");
+        when(userRepository.findUserEntityByEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(user1));
         when(postRepository.save(Mockito.any(PostEntity.class))).thenReturn(post);
 
-        PostResponseDTO savedPost = service.makePost(1L, postRequestDTO);
+        PostResponseDTO savedPost = service.makePost(postRequestDTO);
 
         Assertions.assertThat(savedPost).isNotNull();
     }
@@ -92,21 +93,22 @@ class PostServiceImplTest {
     void editPost() {
         PostEntity post = Mockito.mock(PostEntity.class);
         PostEntity oldPost = Mockito.mock(PostEntity.class);
-        when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user1));
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email@gmail.com");
+        when(userRepository.findUserEntityByEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(user1));
         when(postRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(oldPost));
         when(postRepository.save(Mockito.any(PostEntity.class))).thenReturn(post);
 
-        PostResponseDTO updatedPost = service.editPost(1L, 2L, postRequestDTO);
+        PostResponseDTO updatedPost = service.editPost( 2L, postRequestDTO);
 
         Assertions.assertThat(updatedPost).isNotNull();
     }
     @Test
     void viewPost() {
         PostEntity post = Mockito.mock(PostEntity.class);
-        when(postRepository.findPostEntityByUserEntityUserIdAndPostId(Mockito.anyLong(), Mockito.anyLong()))
+        when(postRepository.findByPostId(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(post));
 
-        PostResponseDTO foundPost = service.viewPost(1L, 1L);
+        PostResponseDTO foundPost = service.viewPost(1L);
 
         Assertions.assertThat(foundPost).isNotNull();
     }
@@ -114,11 +116,11 @@ class PostServiceImplTest {
     @Test
     void pagePost() {
         PostEntity post = Mockito.mock(PostEntity.class);
-        Slice<PostEntity> postEntities =  new SliceImpl<>(Collections.singletonList(post));
+        Page<PostEntity> postEntities =  new PageImpl<>(Collections.singletonList(post));
 
-        when(postRepository.findByUserEntityUserId(Mockito.anyLong(), Mockito.any(Pageable.class))).thenReturn(postEntities);
+        when(postRepository.findAll(Mockito.any(Pageable.class))).thenReturn(postEntities);
 
-        List<PostResponseDTO> result = service.pagePost(1L, 0, 2);
+        List<PostResponseDTO> result = service.pagePost( 0, 2);
 
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(!result.isEmpty()).isTrue();

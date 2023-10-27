@@ -82,10 +82,10 @@ class PostsControllerTest {
 
     @Test
     void createPost() throws Exception {
-        when(postServices.makePost(Mockito.anyLong(), Mockito.any(PostRequestDTO.class))).thenReturn(postResponseDTO);
+        when(postServices.makePost(Mockito.any(PostRequestDTO.class))).thenReturn(postResponseDTO);
 
         String content = objectMapper.writeValueAsString(postRequestDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/posts/{adminId}", 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/posts", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(postsController)
@@ -119,11 +119,11 @@ class PostsControllerTest {
 
     @Test
     void updatePost() throws Exception {
-        when(postServices.editPost(Mockito.anyLong(), Mockito.anyLong(), Mockito.any(PostRequestDTO.class)))
+        when(postServices.editPost(Mockito.anyLong(), Mockito.any(PostRequestDTO.class)))
                 .thenReturn(postResponseDTO);
 
         String content = objectMapper.writeValueAsString(postRequestDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/api/v1/posts/{adminId}/{postId}", 1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/api/v1/posts/{postId}",  1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(postsController)
@@ -139,11 +139,11 @@ class PostsControllerTest {
 
     @Test
     void pagingPost() throws Exception {
-        when(postServices.pagePost(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt()))
+        when(postServices.pagePost(Mockito.anyInt(), Mockito.anyInt()))
                 .thenReturn(postResponseDTOList);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/posts/{adminId}/page_no/{pageNo}/page_size/{pageSize}",
-                        1L, 0, 2)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/posts/page_no/{pageNo}/page_size/{pageSize}",
+                         0, 2)
                 .contentType(MediaType.APPLICATION_JSON);
         MockMvcBuilders.standaloneSetup(postsController)
                 .build()
@@ -158,10 +158,10 @@ class PostsControllerTest {
 
     @Test
     void viewPost() throws Exception {
-        when(postServices.viewPost(Mockito.anyLong(), Mockito.anyLong()))
+        when(postServices.viewPost(Mockito.anyLong()))
                 .thenReturn(postResponseDTO);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/posts/{adminId}/{postId}", 1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/posts/{postId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockMvcBuilders.standaloneSetup(postsController)

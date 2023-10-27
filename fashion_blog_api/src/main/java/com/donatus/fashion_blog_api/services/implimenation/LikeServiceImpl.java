@@ -7,6 +7,7 @@ import com.donatus.fashion_blog_api.model.entity.*;
 import com.donatus.fashion_blog_api.repository.*;
 import com.donatus.fashion_blog_api.services.LikeServices;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,17 +24,17 @@ public class LikeServiceImpl implements LikeServices {
 
     @Transactional
     @Override
-    public boolean likePost(Long userId, Long postId) {
-        if (postLikesRepo.existsByUserEntityUserIdAndPostEntityPostId(userId, postId)){
-            postLikesRepo.deleteByUserEntityUserIdAndPostEntityPostId(userId, postId);
+    public boolean likePost(Long postId) {
+        String email =  SecurityContextHolder.getContext().getAuthentication().getName();
 
-            // Post unliked
+        // Post unliked
+        if (postLikesRepo.deleteByUserEntityEmailAndPostEntityPostId(email, postId) > 0){
             return false;
         }
 
         PostLikes like = new PostLikes();
-        UserEntity user = userRepo.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id: "+userId+" not found!"));
+        UserEntity user = userRepo.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email: "+email+" not found!"));
 
         PostEntity post = postRepo.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Post with id: "+postId+" not found!"));
@@ -48,19 +49,17 @@ public class LikeServiceImpl implements LikeServices {
 
     @Transactional
     @Override
-    public boolean likeComment(Long userId, Long commentId) {
-        if (commentLikesRepo.existsByUserEntityUserIdAndCommentsEntityCommentId(userId, commentId)){
-            commentLikesRepo.deleteByUserEntityUserIdAndCommentsEntityCommentId(userId, commentId);
+    public boolean likeComment(Long commentId) {
+        String email =  SecurityContextHolder.getContext().getAuthentication().getName();
 
-            System.out.println("Me too");
-
-            // Comment unliked
+        // Comment unliked
+        if (commentLikesRepo.deleteByUserEntityEmailAndCommentsEntityCommentId(email, commentId) > 0){
             return false;
         }
 
         CommentLikes like = new CommentLikes();
-        UserEntity user = userRepo.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id: "+userId+" not found!"));
+        UserEntity user = userRepo.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email: "+email+" not found!"));
 
         CommentsEntity comments = commentRepo.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Post with id: "+commentId+" not found!"));

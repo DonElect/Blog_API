@@ -18,24 +18,21 @@ import java.util.List;
 public class CommentsController {
     private final CommentServices commentServices;
 
-    @PostMapping("/{postId}/{userId}")
+    @PostMapping("/{postId}")
     public ResponseEntity<CommentResponseDTO> createComment(@RequestBody @Valid CommentRequestDTO comment,
-                                                            @PathVariable Long postId,
-                                                            @PathVariable Long userId){
-        return new ResponseEntity<>(commentServices.makeComment(postId, userId, comment), HttpStatus.CREATED);
+                                                            @PathVariable Long postId){
+        return new ResponseEntity<>(commentServices.makeComment(postId, comment), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}/{commentId}")
-    public ResponseEntity<CommentResponseDTO> showComment(@PathVariable Long userId,
-                                                          @PathVariable Long commentId){
-        return ResponseEntity.ok(commentServices.viewComment(userId, commentId));
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentResponseDTO> showComment(@PathVariable Long commentId){
+        return ResponseEntity.ok(commentServices.viewComment(commentId));
     }
 
-    @PutMapping("/{userId}/{commentId}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentRequestDTO comment,
-                                                            @PathVariable Long userId,
                                                             @PathVariable Long commentId){
-        return ResponseEntity.ok(commentServices.editComment(userId, commentId, comment));
+        return ResponseEntity.ok(commentServices.editComment(commentId, comment));
     }
 
     @GetMapping("/{postId}/{page_no}/{page_size}")

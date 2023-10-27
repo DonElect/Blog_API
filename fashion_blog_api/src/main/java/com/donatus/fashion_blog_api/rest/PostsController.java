@@ -22,10 +22,9 @@ public class PostsController {
     private final PostServices postServices;
 
 
-    @PostMapping("/{adminId}")
-    public ResponseEntity<PostResponseDTO> createPost(@RequestBody @Valid PostRequestDTO postRequestDTO,
-                                                      @PathVariable Long adminId) {
-        return new ResponseEntity<>(postServices.makePost(adminId, postRequestDTO), HttpStatus.CREATED);
+    @PostMapping("")
+    public ResponseEntity<PostResponseDTO> createPost(@RequestBody @Valid PostRequestDTO postRequestDTO) {
+        return new ResponseEntity<>(postServices.makePost(postRequestDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/images/{postId}")
@@ -34,24 +33,21 @@ public class PostsController {
        return new ResponseEntity<>(postServices.uploadPostImage(file, postId), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{adminId}/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDTO> updatePost(@RequestBody @Valid PostRequestDTO postRequestDTO,
-                                                      @PathVariable Long adminId,
                                                       @PathVariable Long postId){
-        return ResponseEntity.ok(postServices.editPost(adminId, postId, postRequestDTO));
+        return ResponseEntity.ok(postServices.editPost(postId, postRequestDTO));
     }
 
-    @GetMapping("/{adminId}/page_no/{pageNo}/page_size/{pageSize}")
-    public ResponseEntity<List<PostResponseDTO>> pagingPost(@PathVariable Long adminId,
-                                                            @PathVariable Integer pageNo,
+    @GetMapping("/page_no/{pageNo}/page_size/{pageSize}")
+    public ResponseEntity<List<PostResponseDTO>> pagingPost(@PathVariable Integer pageNo,
                                                             @PathVariable Integer pageSize){
-        return ResponseEntity.ok(postServices.pagePost(adminId, pageNo, pageSize));
+        return ResponseEntity.ok(postServices.pagePost(pageNo, pageSize));
     }
 
-    @GetMapping("/{adminId}/{postId}")
-    public ResponseEntity<PostResponseDTO> viewPost(@PathVariable Long adminId,
-                                                    @PathVariable Long postId){
-        return ResponseEntity.ok(postServices.viewPost(adminId, postId));
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDTO> viewPost(@PathVariable Long postId){
+        return ResponseEntity.ok(postServices.viewPost(postId));
     }
 
     @GetMapping("/likes/{postId}/page_no/{pageNo}/page_size/{pageSize}")

@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -32,6 +34,8 @@ class LikeServiceImplTest {
     private PostRepository postRepo;
     @Mock
     private CommentRepository commentRepo;
+    @Mock
+    private Authentication authentication;
     private PostLikes postLikes;
     private CommentLikes commentLikes;
 
@@ -45,6 +49,8 @@ class LikeServiceImplTest {
         commentLikes = CommentLikes.builder()
                 .comLikeId(1L)
                 .build();
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Test
@@ -52,11 +58,12 @@ class LikeServiceImplTest {
         UserEntity user = Mockito.mock(UserEntity.class);
         PostEntity post = Mockito.mock(PostEntity.class);
 
-        when(userRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email@gmail.com");
+        when(userRepo.findUserEntityByEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(user));
         when(postRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(post));
         when(postLikesRepo.save(Mockito.any(PostLikes.class))).thenReturn(postLikes);
 
-        boolean isLiked = likeService.likePost(1L, 1L);
+        boolean isLiked = likeService.likePost( 1L);
 
         Assertions.assertThat(isLiked).isTrue();
     }
@@ -66,11 +73,12 @@ class LikeServiceImplTest {
         UserEntity user = Mockito.mock(UserEntity.class);
         CommentsEntity comment = Mockito.mock(CommentsEntity.class);
 
-        when(userRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn("email@gmail.com");
+        when(userRepo.findUserEntityByEmail(Mockito.anyString())).thenReturn(Optional.ofNullable(user));
         when(commentRepo.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(comment));
         when(commentLikesRepo.save(Mockito.any(CommentLikes.class))).thenReturn(commentLikes);
 
-        boolean isLiked = likeService.likeComment(1L, 1L);
+        boolean isLiked = likeService.likeComment( 1L);
 
         Assertions.assertThat(isLiked).isTrue();
     }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -63,15 +66,14 @@ class CommentsControllerTest {
                 .build();
 
         commentResponseDTOList = new ArrayList<>(List.of(commentResponseDTO));
-
     }
 
     @Test
     void createComment() throws Exception {
-        when(commentServices.makeComment(Mockito.anyLong(), Mockito.anyLong(), Mockito.any(CommentRequestDTO.class))).thenReturn(commentResponseDTO);
+        when(commentServices.makeComment(Mockito.anyLong(), Mockito.any(CommentRequestDTO.class))).thenReturn(commentResponseDTO);
 
         String content = objectMapper.writeValueAsString(commentRequestDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/comments/{postId}/{userId}", 1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/comments/{postId}",  1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(commentsController)
@@ -86,10 +88,10 @@ class CommentsControllerTest {
 
     @Test
     void showComment() throws Exception {
-        when(commentServices.viewComment(Mockito.anyLong(), Mockito.anyLong()))
+        when(commentServices.viewComment( Mockito.anyLong()))
                 .thenReturn(commentResponseDTO);
 
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/comments/{userId}/{commentId}", 1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/comments/{commentId}",  1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockMvcBuilders.standaloneSetup(commentsController)
@@ -104,12 +106,12 @@ class CommentsControllerTest {
 
     @Test
     void updateComment() throws Exception {
-        when(commentServices.editComment(Mockito.anyLong(), Mockito.anyLong(), Mockito.any(CommentRequestDTO.class)))
+        when(commentServices.editComment(Mockito.anyLong(), Mockito.any(CommentRequestDTO.class)))
                 .thenReturn(commentResponseDTO);
 
         String content = objectMapper.writeValueAsString(commentRequestDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/api/v1/comments/{userId}/{commentId}",
-                        1L, 1L)
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/api/v1/comments/{commentId}",
+                         1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(commentsController)

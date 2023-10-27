@@ -1,11 +1,11 @@
 package com.donatus.fashion_blog_api.security;
 
-import com.donatus.fashion_blog_api.config.CustomUserDetailsServices;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-
+@Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -32,7 +32,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String token = getJWTFromRequest(request);
 
-        if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)){
+        if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)
+                && SecurityContextHolder.getContext().getAuthentication() == null){
             String email = tokenGenerator.getEmailFromJWT(token);
 
             UserDetails userDetails = userDetailsServices.loadUserByUsername(email);

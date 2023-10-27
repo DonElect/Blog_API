@@ -58,6 +58,11 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/api/v1/comments/**")).hasAnyAuthority("USER")
                         .requestMatchers(antMatcher(HttpMethod.DELETE, "/api/v1/comments/**")).hasAnyAuthority("USER")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/comments/likes/**")).hasAnyAuthority("USER")
+                        // Likes Authorisation
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/likes/posts/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/api/v1/likes/comments/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/likes/posts/count/**")).hasAnyAuthority("USER")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/api/v1/likes/comments/count/**")).hasAnyAuthority("USER")
 
                         .anyRequest().authenticated());
 

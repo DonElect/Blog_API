@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,12 +37,14 @@ public class CommentServiceImpl implements CommentServices {
     private final MyDTOMapper myDTOMapper = new MyDTOMapper();
 
     @Override
-    public CommentResponseDTO makeComment(Long postId, Long userId, CommentRequestDTO comment) {
+    public CommentResponseDTO makeComment(Long postId, CommentRequestDTO comment) {
+        String email =  SecurityContextHolder.getContext().getAuthentication().getName();
+
         PostEntity post = postRepo.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("No post with id: "+postId));
 
-        UserEntity user = userRepo.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("No user with id "+userId));
+        UserEntity user = userRepo.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("No user with email "+email));
 
         CommentsEntity newComment = mapper.map(comment, CommentsEntity.class);
 
@@ -54,19 +57,21 @@ public class CommentServiceImpl implements CommentServices {
     }
 
     @Override
-    public CommentResponseDTO viewComment(Long userId, Long commentId) {
-        CommentsEntity comment = commentRepo.findCommentsEntityByUserEntityUserIdAndCommentId(userId, commentId)
+    public CommentResponseDTO viewComment(Long commentId) {
+        CommentsEntity comment = commentRepo.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found!"));
 
         return mapper.map(comment, CommentResponseDTO.class);
     }
 
     @Override
-    public CommentResponseDTO editComment(Long userId, Long commentId, CommentRequestDTO comment) {
-        UserEntity user = userRepo.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("No user with id: "+userId+" found."));
+    public CommentResponseDTO editComment(Long commentId, CommentRequestDTO comment) {
+        String email =  SecurityContextHolder.getContext().getAuthentication().getName();
 
-        CommentsEntity oldComment = commentRepo.findCommentsEntityByUserEntityUserIdAndCommentId(userId, commentId)
+        UserEntity user = userRepo.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("No user with email: "+email+" found."));
+
+        CommentsEntity oldComment = commentRepo.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found!"));
 
         mapper.map(comment, oldComment);

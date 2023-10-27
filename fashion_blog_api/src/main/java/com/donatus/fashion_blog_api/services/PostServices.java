@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface PostServices {
-    PostResponseDTO viewPost(Long adminId, Long postId);
-    List<PostResponseDTO> pagePost(Long adminId, Integer pageNo, Integer pageSize);
+    PostResponseDTO viewPost(Long postId);
+    List<PostResponseDTO> pagePost(Integer pageNo, Integer pageSize);
     List<UserResponseDTO> pagePostLiker(Long postId, Integer pageNo, Integer pageSize);
-    PostResponseDTO makePost(Long adminId, PostRequestDTO post);
-    PostResponseDTO editPost(Long adminId, Long postId, PostRequestDTO post);
+    PostResponseDTO makePost(PostRequestDTO post);
+    PostResponseDTO editPost(Long postId, PostRequestDTO post);
     ImageDataResponseDTO uploadPostImage(MultipartFile multipartFile, Long postId) throws IOException;
     void deletePost(Long postId);
     void deleteAPostImage(Long imageId);
