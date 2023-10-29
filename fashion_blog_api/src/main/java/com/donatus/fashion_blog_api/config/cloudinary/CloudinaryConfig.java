@@ -1,6 +1,7 @@
 package com.donatus.fashion_blog_api.config.cloudinary;
 
 import com.cloudinary.Cloudinary;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,9 +10,12 @@ import java.util.Map;
 
 @Configuration
 public class CloudinaryConfig {
-    private final String CLOUD_NAME = "dfjzskbe6";
-    private final String API_KEY = "473221831389556";
-    private final String API_SECRET = "Yy8o03dCGqc219TUQCV9OQJl1Wc";
+    @Value("${cloudinary.name}")
+    private String CLOUD_NAME;
+    @Value("${cloudinary.api_key}")
+    private String API_KEY;
+    @Value("${cloudinary.secrete}")
+    private String API_SECRET;
     @Bean
     public Cloudinary cloudinary(){
         Map<String, String> config = new HashMap<>();
